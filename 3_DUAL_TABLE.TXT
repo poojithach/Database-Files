@@ -1,0 +1,72 @@
+DUAL TABLE:
+===========
+IF WE ARE PERFORMING ANY OPERATIONS WHICH ARE NOT RELATED TO ANY TABLE(EMP,DEPT ETC) THEN WE CAN USE THE DUAL TABLE
+
+EX: 1+1,40*50,LENGTH('PRAKASH'),SYSDATE
+
+DUAL TABLE CONTAINS THE COLUMN "DUMMY" WITH DATATYPE VARCHAR2 AND SIZE 1 
+
+SELECT * FROM DUAL
+
+DUMMY
+----
+X
+----
+
+EX:
+---
+
+SELECT LENGTH('PRAKASH') FROM DUAL;
+
+SELECT SYSDATE FROM DUAL
+
+
+
+SELECT EMPNO,1 FROM EMP1;
+
+101 1
+102 1
+103 1
+
+SELECT EMPNO,10*10 "RESULT" FROM EMP1;
+
+EMPNO RESULT
+101 100
+102 100
+103 100
+
+SELECT 10*10 FROM EMP1;
+
+100
+100
+100
+
+SELECT * FROM EMP1 WHERE SAL=2000;
+
+             101        1000=2000 false
+             102        2000=2000 true
+             103        2000=2000 true
+102
+103
+
+select * from emp1 where 1=1;
+             
+             101        1=1 true
+             102        1=1 true
+             103        1=1 true
+retrived all the rows
+
+select * from emp1 where 1=2;
+            
+             101        1=2 false
+             102        1=2 false
+             103        1=2 false
+no rows retrived 
+
+select * from emp1 where 'ramu'='RAMU';
+
+NO ROWS RETRIVED
+
+select * from emp1 where RAMU='RAMU';
+
+ALL ROWS RETRIVED

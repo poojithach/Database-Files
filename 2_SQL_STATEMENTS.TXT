@@ -1,0 +1,523 @@
+Oracle is Database
+
+Oracle => SQL(Structured query language) + PLSQL(Procedural Language Structured query language)
+          PLSQL is extention to the SQL
+
+SQL STATEMENTS:
+
+DATA RETRIEVAL LANGUAGE (DRL)           Select
+                                       (Retrieves data from the data base)
+
+DATA MANIPULATION LANGUAGE (DML)    Insert, Update, Delete, Merge(Conditional insert or update)
+                                    (Enters new rows, changes existing rows and removes existing rows)
+
+DATA DEFINITION LANGUAGE (DDL)          Create, Alter, Drop, Rename, Truncate
+                                        (Setup, change and remove data structures from tables)
+
+TRANSACTION CONTROL LANGUAGE (TCL)   Commit, Rollback, Savepoint
+                                    (Manages the changes made by DML statements)
+
+
+DATA CONTROL LANGUAGE (DCL)           Grant, Revoke
+                                      (Give or remove access rights to both oracle database and structures               
+                                                                             with in it)
+
+
+Data Types:
+-----------
+Number     : no size
+empno number   --MAX 38 digits
+empno number(4)--MAX 9999 we can enter
+
+
+char      : Max size 2000
+            alphanumeric
+            fixed
+varchar2  : Max size 4000
+            alphanumeric
+            variable
+date      : occupy 9 characters
+
+21-oct-2015 valid
+
+21-october-2015 invalid
+21/oct/2015     invalid
+
+
+STATEMENTS:
+-------------------------
+-------------------------
+CREATE : Creating the table
+-------
+
+create table emp1(empno       number,
+                  ename       varchar2(90),
+                  alias_name  char(90),
+                  sal         number(4), --max 99999 we can give
+                  DOJ         date );
+
+table name should start with alphabet (not with numeric) and max we can have 30
+ emp1 -- valid
+ 1emp -- not valid
+ emp_bh1 --valid
+ _empbh1 --not valid
+
+
+To see the structure of the table:
+
+desc emp1;
+
+
+INSERT: Inserting the data into table
+--------
+
+101,'prakash','bunty',1000,'13-oct-2015'
+102,'ramu',null,2000,'05-sep-2015'
+103,'ramesh',ram,null,null
+
+-- represent comments
+
+
+insert into emp1 (empno,
+                  ename,
+                  alias_name,
+                  sal,
+                  DOJ)
+             values (101,      --empno,
+                     'prakash',--ename,
+                     'bunty',  --alias_name,
+                      1000,     --sal,
+                      '13-oct-2015' --DOJ,
+                     );
+or
+
+insert into emp1 values (101,      --empno,
+                     'prakash',--ename,
+                     'bunty',  --alias_name,
+                      1000,     --sal,
+                      '13-oct-2015' --DOJ,
+                     );
+
+insert into emp1 
+             values (103,      --empno,
+                     'ramesh',--ename,
+                     'ram',  --alias_name,
+                     );  
+--invalid as if we wont mention the column names it will expect the data for all the columns
+
+
+insert into emp1 (empno,
+                  ename,
+                  alias_name,
+                  sal,
+                  DOJ)
+             values (103,      --empno,
+                     'ramesh',--ename,
+                     'ram',  --alias_name,
+                      null,     --sal,
+                      null --DOJ,
+                     );
+or
+
+insert into emp1 (empno,
+                  ename,
+                  alias_name
+                    )
+             values (103,      --empno,
+                     'ramesh',--ename,
+                     'ram',  --alias_name,
+                     );
+
+
+SELECT:
+--------
+
+SELECT * FROM EMP1;
+* INCIDATES ALL THE COLUMNS
+
+SELECT EMPNO,ENAME FROM EMP1;
+
+  select empno,length(ename),length(alias_name) from emp1;
+        101    7   90
+        103    6   90 
+        
+        alias_name is taking always 90 characters so dont use
+
+
+UPDATE:
+--------
+updating the data
+
+        UPDATE EMP1 SET ALIAS_NAME='RAMS',SAL=2000,DOJ='15-OCT-2015' WHERE empno=103;
+         UPDATE EMP1 SET ALIAS_NAME=NULL,SAL=2000,DOJ='15-OCT-2015' WHERE empno=103;
+        
+        SELECT * FROM EMP1;
+        
+        UPDATE EMP1 SET ALIAS_NAME='RAMS',SAL=2000,DOJ='15-OCT-2015';
+        --WITHOUT WHERE CONDITION ALL THE ROWS WILL BE UPDATED
+
+DELETE:
+------
+
+Deleting the rows
+
+DELETE FROM EMP1 WHERE EMPNO=101;
+        
+DELETE FROM EMP1;
+        --WITHOUT WHERE CONDITION ALL THE ROWS WILL BE DELETED
+
+ ALTER:
+        -------
+         ADDING THE COLUMNS
+         MODIFY THE COLUMNS (CHANGING THE DATATYPES OR SIZE)
+         RENAMING THE COLUMN NAMES 
+         DROPING THE COLUMNS
+         
+         ADDING THE COLUMNS
+         ------------------
+          DEPTNO NUMBER,DA NUMBER
+          
+          ALTER TABLE EMP1 ADD (DEPTNO NUMBER,DA NUMBER );
+          
+          DESC EMP1;
+          
+          101 : DEPTNO = 10,DA=100
+          103  : DEPTNO=20,DA=200
+          
+          UPDATE EMP1 SET DEPTNO = 10,DA=100 WHERE EMPNO=101;
+          
+          UPDATE EMP1 SET DEPTNO=20,DA=200 WHERE EMPNO=103;
+          
+          
+          MODIFY THE COLUMNS (CHANGING THE DATATYPES OR SIZE)
+         -------------------------------------------------------
+         
+         INCREASE ENAME SIZE TO 150,SAL SIZE 6
+         
+          ALTER TABLE EMP1 MODIFY (ENAME VARCHAR2(150), SAL NUMBER(6) );
+          
+          DESC EMP1;
+        
+        ALTER TABLE EMP1 MODIFY ( SAL NUMBER(2) );
+        
+        ITS NOT POSSIBLE BEAUSE SAL COLUMN CONTAINS MAX 4 DIGITS WE CAN DECREASE TO 4 NOT LESS THAN THIS
+        IF WANT TO DECREASE THE UPDATE THE SAL T0 NULL FOR ALL THE ROWS AND THEN DO IT.
+        
+        
+        
+        RENAMING THE COLUMN NAMES 
+        ---------------------------
+        
+        SAL TO SALARY
+        DA TO DAILY_ALLOWANCE
+        
+        ALTER TABLE EMP1 RENAME COLUMN SAL TO SALARY;
+        
+        ALTER TABLE EMP1 RENAME COLUMN DA TO DAILY_ALLOWANCE;
+        
+        WE CAN RENAME ONLY ONE COLUMN AT A TIME
+        
+        
+        DROPING THE COLUMNS
+        --------------------
+        
+        I DONT WANT ALIAS_NAME AND DAILY_ALLOWANCE
+        
+        ALTER TABLE EMP1 DROP COLUMN ALIAS_NAME;
+        
+        ALTER TABLE EMP1 DROP COLUMN DAILY_ALLOWANCE;
+        
+        EVENTHOUGH DATA IS THERE COLUMNS CAN BE DROPPED
+
+ 
+
+
+        RENAME
+        ------
+        
+        RENAMING THE TABLE NAME
+        
+        RENAMING EMP1 TO EMPLOYEE1
+        
+        RENAME  EMP1 TO EMPLOYEE1;
+        
+        SELECT * FROM EMP1;--TABLE OR VIEW DOESNT EXISTS
+
+
+         SELECT * FROM EMPLOYEE1;  
+         
+         
+         DROP:
+         ----
+         DROPING THE TABLE
+         
+         DROP TABLE   EMPLOYEE1;
+         
+         SELECT * FROM     EMPLOYEE1;
+
+
+
+COMMIT ROLLBACK SAVEPOINT
+==========================
+
+
+SESSION1 
+--------
+insert into emp1 values (101,'ramesh',1000,'10-oct-2013',10);
+
+insert into emp1 values (102,'mahesh',2000,'20-oct-2013',10);
+
+
+(inserted 103 from session2)
+--BEFORE COMMIT FROM SESSION2
+
+select * from emp1; 
+
+101
+102
+
+commit; or DDL statements
+
+--AFTER COMMIT FROM SESSION2
+
+select * from emp1; 
+
+101
+102
+103
+
+
+
+SESSION2:
+---------
+insert into emp1 values (103,'PRAKASH',1000,'10-oct-2013',10);
+
+--BEFORE COMMIT FROM SESSION1
+
+select * from emp1;  
+103
+
+--AFTER COMMIT FROM SESSION1
+
+select * from emp1; 
+
+101
+102
+103
+
+COMMIT; or DDL statements
+
+
+
+
+
+
+state of the data before commit or rollback;
+---------------------------------------------
+when ever we execute the DML statements it will effect buffer instead of Database directly.
+if we want we can able to get the previous state of the data using rollback.
+
+
+State of the data after commit;
+--------------------------------
+all the changes are made paremenent in the database and buffer will be closed.
+We cant get the previous state of the data.
+
+State of the data after rollback;
+--------------------------------
+All the changes are undone and buffer will be closed.
+We will get the previous state of the data.
+
+
+ALL THE DDL statements are autocommit.ie., if we create or alter or rename or drop then it will effect the database directly
+without any buffer concept.so after executing dml statements if we execute the DDL statements then all the DML statements also committed
+into the database
+
+All the DML statements are not autocommit.ie if we insert or delete or update then it will effect the buffer instead of database.
+
+savepoint:
+===========
+it will  mark the position in the buffer.
+
+savepoint A;
+
+insert into emp1 values (101,'ramesh',1000,'10-oct-2013',10);
+
+
+savepoint b;
+
+insert into emp1 values (102,'mahesh',2000,'20-oct-2013',10);
+
+insert into emp1 values (103,'mahesh',2000,'20-oct-2013',10);
+
+savepoint c;
+
+insert into emp1 values (104,'mahesh',2000,'20-oct-2013',10);
+
+
+select * from emp1;
+101
+102
+103
+104
+
+rollback to b;
+
+--THE STATEMENTS WHICH WE HAVE EXECUTED FROM SAVEPOINT b will be ROLLBACKED (B and C savepoints).AND ALL THE SAVEPOINTS FROM B WILL BE DROPED
+
+select * from emp1;
+101
+
+commit;
+--ALL THE DML STATEMENTS ARE COMMIED AND SAVEPOINTS WILL BE DROPPED
+--THERE IS NO ANY IMPACT OF THE SAVEPOINTS ON COMMIT.SIMPLY COMMIT WILL MAKE THE CHANGES TO THE DATABASE AND DROP ALL THE SAVEPOINTS.
+rollback to a;
+
+
+TRUNCATE
+=========
+
+TRUNCATE TABLE EMP1;
+
+IT WILL DELETE ALL THE ROWS FROM THE DATABASE.
+
+WHAT IS THE DIFFERENCED BETWEEN DELETE AND TRUNCATE
+
+DELETE
+------
+ITS A DML STATEMENT
+WE CAN GET BACK THE DATA USING ROLLBACK
+WE CAN USE THE WHERE CLAUSE
+IT WILL CONSIDER THE TRIGGER
+
+
+
+TRUNCATE
+---------
+ITS A DDL STATEMENT
+WE CANT GET BACK THE DATA AS IT IS AUTOCOMMIT
+WE CANT USE THE WHERECLAUSE
+IT WONT CONSIDER THE TRIGGER
+
+Grant and Revoke:
+----------------- 
+
+user or schema:
+--------------- 
+
+when ever we create the user(or schema) some place will be reserved for the particular user.   
+
+Using GRANT we can give the permissions to other users for the statements select,insert,delete,update and alter.
+
+
+create user:
+------------
+we cant create the user by logging with normal users.Need to login the user which has administrator previleges.
+
+normal username/password: scott/tiger
+
+Admin username/password: system/manager  
+
+CREATE TABLE EMP_TEST1(EMPNO NUMBER,
+                       ENAME VARCHAR2(90) );
+                       
+CREATE TABLE EMP_TEST2(EMPNO NUMBER,
+                       ENAME VARCHAR2(90) );
+                       
+                       
+INSERT INTO EMP_TEST1 VALUES (101,'RAMESH');
+
+INSERT INTO EMP_TEST1 VALUES (102,'MAHESH');
+
+SELECT * FROM EMP;
+
+COMMIT;
+
+GRANT SELECT  ON EMP_TEST1 TO USERB;
+
+GRANT SELECT,INSERT,DELETE,UPDATE,ALTER  ON EMP_TEST1 TO USERB;
+
+OR
+
+GRANT ALL ON EMP_TEST1 TO USERB;
+
+GRANT ALL ON EMP_TEST1,EMP_TEST2 TO USERB;-AT A TIME ONLY WE CAN ABLE TO GIVE THE PERMISSIONS ON ONE OBJECT(TABLES,VIEWS,SYSNONYMS,SEQUENCES)
+
+GRANT ALL ON EMP_TEST1 TO USERB,APPS;-AT A TIME WE CAN ABLE TO GIVE THE GRANTS TO MANY USERS ON ONLY ONE OBJECT
+
+GRANT ALL ON EMP_TEST1 TO USERB;-USERB CANNOT GIVE GRANTS TO OTHER USERS AS USERB DOESNT HAVE ANY SPECIAL PREVILIEGES
+
+GRANT ALL ON EMP_TEST1 TO USERB WITH GRANT OPTION;
+-USERB CAN PROVIDE THE GRANTS TO OTHER USERS.
+
+
+TAKING BACK THE GRANTS:
+------------------------
+
+REVOKE ALTER ON EMP_TEST1 FROM USERB;
+
+REVOKE ALL ON EMP_TEST1 FROM USERB;
+        
+
+
+                     
+
+                     
+
+                  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

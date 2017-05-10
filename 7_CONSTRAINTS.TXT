@@ -1,0 +1,323 @@
+CONSTRAINTS
+-----------
+
+USING THE CONSTRAINTS WE CAN ENFORCE THE RULES ON THE DATA WHEN EVER DATA IS INSERTED OR UPDATED OR DELETED
+
+WE CAN DEFINE THE CONSTRAINTS IN TWO TIMINGS
+1) AT  THE TIME OF TABLE CREATION (SUGGESTABLE)
+2) ONCE THE TABLE IS DEFINED (bY ALTERING)
+
+WE CAN DEFINE THE CONNSTRAINTS AT COLUMN AND TABLE LEVELS
+
+1) COLUMN LEVEL : CONSTRAINT WILL BE DEFINED WITH IN THE COLUMN DEFINITION AND REFERED SINGLE COLUMN.
+                  WE CAN DEFINE ANY TYPE OF CONSTAINT
+2) TABLE LEVEL : CONSTRAINT WILL BE DEFINED ONCE  THE COLUMN DEFINITIONS ARE DONE AND REFERED SINGLE OR MULTIPLE COLUMNS.
+                  WE CAN DEFINE ANY TYPE OF CONSTAINT EXPECT NOT NULL.
+                  
+                  
+TYPES OF CONTRAINTS
+----------------------
+1)NOT NULL
+2) UNIQUE
+3)CHECK
+4)PRIMARY KEY
+5) FOREIGN KEY OR REFERENTIAL INTEGRITY CONSTRAINT
+
+NOT NULL: IT ENSURES THAT COLUMN DOESNT CONTAIN NULL VALUES
+=================================================================
+
+CREATE TABLE EMP1(EMPNO NUMBER NOT NULL,
+                  ENAME VARCHAR2(90)  NOT NULL,
+                  SAL  NUMBER,
+                  DEPTNO NUMBER);
+                  
+  INSERT INTO EMP1(EMPNO,ENAME,SAL,DEPTNO) VALUES (NULL,'PRAKASH',100,10);
+   -ERROR cannot insert NULL into ("APPS"."EMP1"."EMPNO")
+   
+   IF WE DONT NAME THE CONTRAINT THEN CONSTRAINT NAME WILL BE CREATED WITH SYS_Cn
+   
+   SELECT * FROM USER_CONSTRAINTS WHERE TABLE_NAME='EMP1' --IT WILL SHOW THE CONSTAINT NAME NO THE COLUMN NAME
+   
+   SELECT * FROM USER_CONS_COLUMNS WHERE CONSTRAINT_NAME IN ('SYS_C00207720','SYS_C00207721'); -IT WILL SHOW ON WHICH COLUMNS CONSTRAINTS ARE APPLIED
+
+
+
+CREATE TABLE EMP1(EMPNO NUMBER CONSTRAINT CON_NN1 NOT NULL,
+                  ENAME VARCHAR2(90) CONSTRAINT CON_NN2 NOT NULL,
+                  SAL  NUMBER,
+                  DEPTNO NUMBER);
+                  
+                  
+UNIQUE:IT ENSURES THAT COLUMN(S) DOESNT CONTAIN DUPLICATE VALUES
+==================================================================
+
+COLUMN LEVEL
+------------
+
+CREATE TABLE EMP1(EMPNO NUMBER  CONSTRAINT CON_UN1 UNIQUE,
+                  ENAME VARCHAR2(90) CONSTRAINT CON_NN2 NOT NULL,
+                  SAL  NUMBER,
+                  DEPTNO NUMBER);
+        
+
+
+INSERT INTO EMP1(EMPNO,ENAME,SAL,DEPTNO) VALUES (101,'PRAKASH',100,10);
+
+INSERT INTO EMP1(EMPNO,ENAME,SAL,DEPTNO) VALUES (101,'RAM',100,10);
+-unique constraint (APPS.CON_UN1) violated
+
+INSERT INTO EMP1(EMPNO,ENAME,SAL,DEPTNO) VALUES (NULL,'PRAKASH',100,10);
+
+INSERT INTO EMP1(EMPNO,ENAME,SAL,DEPTNO) VALUES (NULL,'RAM',100,10);
+
+-TWO NULL VALUES ARE NOT DUPLICATES.BOTH ARE TWO UNKNOWN VALUES SO WE CANT COMPARE
+
+CREATE TABLE EMP1(EMPNO NUMBER  CONSTRAINT CON_UN1 UNIQUE,
+                  ENAME VARCHAR2(90) CONSTRAINT CON_NN2 NOT NULL,
+                  SAL  NUMBER,
+                  DEPTNO NUMBER);
+                  
+TABLE LEVEL
+
+CREATE TABLE EMP1(EMPNO NUMBER  ,
+                  ENAME VARCHAR2(90) CONSTRAINT CON_NN2 NOT NULL,
+                  SAL  NUMBER,
+                  DEPTNO NUMBER,
+                  CONSTRAINT CON_UN1 UNIQUE(EMPNO) );
+                  
+CREATE TABLE EMP1(EMPNO NUMBER  ,
+                  EMPID NUMBER,
+                  ENAME VARCHAR2(90) CONSTRAINT CON_NN2 NOT NULL,
+                  SAL  NUMBER,
+                  DEPTNO NUMBER,
+                  CONSTRAINT CON_UN1 UNIQUE(EMPNO,EMPID) );
+                  
+ COMPOSITE KEY : CONTRAINT IS APPLIED ON MORE THAN ONE COLUMN THEN IT IS CALLED AS COMPOSITE KEY
+                  
+  INSERT INTO EMP1(EMPNO,EMPID,ENAME) VALUES (101,102,'PRAKASH');  
+  
+  INSERT INTO EMP1(EMPNO,EMPID,ENAME) VALUES (101,103,'RAM'); 
+  CAN BE ACCEPTED AS UNIQUE CONSTRAINT WORKS FOR COMBINATION VALUES    
+  IF WE WANT ON DIFFERENT COLUMNS THEN
+  
+   CREATE TABLE EMP1(EMPNO NUMBER  ,
+                  EMPID NUMBER,
+                  ENAME VARCHAR2(90) CONSTRAINT CON_NN2 NOT NULL,
+                  SAL  NUMBER,
+                  DEPTNO NUMBER,
+                  CONSTRAINT CON_UN1 UNIQUE(EMPNO) ,CONSTRAINT CON_UN2 UNIQUE(EMPID) );
+                  
+                  
+   3)CHECK : IT DEFINES THE USERDEFINED CONDITION AND EVERY ROW SHOULD SATISFY THIS CONTIDITION
+   ===============================================================================================               
+                 
+     EX: SAL>10000  (TABLE &  COLUMN)
+         SAL>COMM   (TABLE LEVEL AS WE ARE REFERRING MORE THAN ONE COLUMN)
+         
+   CREATE TABLE EMP1(EMPNO NUMBER  ,                  
+                  ENAME VARCHAR2(90),
+                  SAL  NUMBER CONSTRAINT CON_CH1 CHECK(SAL>10000),
+                  COMM NUMBER,
+                  DEPTNO NUMBER,
+                  CONSTRAINT CON_CH2 CHECK(SAL>COMM) );
+       OR
+                  
+       CREATE TABLE EMP1(EMPNO NUMBER  ,                  
+                  ENAME VARCHAR2(90),
+                  SAL  NUMBER ,
+                  COMM NUMBER,
+                  DEPTNO NUMBER,
+                  CONSTRAINT CON_CH1 CHECK(SAL>10000) 
+                  ,CONSTRAINT CON_CH2 CHECK(SAL>COMM) );      
+   
+   INSERT INTO EMP1(EMPNO,ENAME,SAL,COMM) VALUES (101,'PRAKASH',18000,20000);  
+   -ERROR --COMM SHOULD NOT BE GREATER THEN SAL
+    
+  
+    
+    
+    4)PRIMARY KEY: IT ENSURES THAT COLUMN(S) DOESNT CONTAIN DUPLICATE VALUES AND NULL VALUES.IN ENTIRE TABLE WE CAN HAVE ONLY ONE PRIMARY KEY
+    ================
+    
+    EMPNO: SHOULD NOT ACCEPT NULL AND DUPLICATE VALUES
+    EMPID : SHOULD NOT ACCEPT NULL AND DUPLICATE VALUES
+        
+    CREATE TABLE EMP1(EMPNO NUMBER CONSTRAINT CON_PK1 PRIMARY KEY,                  
+                  EMPID VARCHAR2(90) CONSTRAINT CON_PK2 PRIMARY KEY,
+                  SAL  NUMBER ,
+                  COMM NUMBER,
+                  DEPTNO NUMBER
+                  ); 
+                --ERROR : Table can have only one primary key
+
+
+CREATE TABLE EMP1(EMPNO NUMBER CONSTRAINT CON_PK1 PRIMARY KEY,                  
+                  EMPID VARCHAR2(90) CONSTRAINT CON_NN1 NOT NULL CONSTRAINT CON_UN1 UNIQUE,
+                  SAL  NUMBER ,
+                  COMM NUMBER,
+                  DEPTNO NUMBER
+                  ); 
+                  
+ CREATE TABLE EMP1(EMPNO NUMBER ,                  
+                  EMPID VARCHAR2(90) ,
+                  SAL  NUMBER ,
+                  COMM NUMBER,
+                  DEPTNO NUMBER,
+                  CONSTRAINT CON_PK1 PRIMARY KEY(EMPNO,EMPID) );
+                  
+                  EMPNO EMPID
+                  101   102  YES
+                  103   104   YES
+                  101   104   YES
+                  101   102   NO 
+
+
+5) FOREIGN KEY OR REFERENTIAL INTEGRITY CONSTRAINT:IT DEFINES ONE COLUMN AS FOREIGN KEY AND MAKES THE RELATIONSHIP WITH ANOTHER COLUMN (THIS COLUMN SHOULD
+BE PRIMARY KEY OR UNIQUE)
+=====================================================
+
+EMP1.EMPNO IS THE FOREIGN KEY AND MAKE THE RELATIONSHIP WITH DEPT.DEPTNO
+
+COLUMN LEVEL
+------------
+ CREATE TABLE EMP1(EMPNO NUMBER ,                  
+                  SAL  NUMBER ,
+                  DEPTNO NUMBER CONSTRAINT CON_FK1 REFERENCES DEPT(DEPTNO),
+                  COMM NUMBER);
+                  
+       DEPT.DEPTNO: 10,20,30,40 (PARENT)
+       SO EMP1.DEPTNO (CHILD) SHOULD ACCEPT ONLY ABOVE FOUR VALUES
+       
+       INSERT INTO EMP1(EMPNO,DEPTNO) VALUES (101,10);       
+       
+       INSERT INTO EMP1(EMPNO,DEPTNO) VALUES (101,50);
+       -integrity constraint (APPS.CON_FK1) violated - parent key not found
+       
+  TABLE  LEVEL
+------------
+
+ CREATE TABLE EMP1(EMPNO NUMBER ,                  
+                  SAL  NUMBER ,
+                  DEPTNO NUMBER,
+                  COMM NUMBER,
+                  CONSTRAINT CON_FK1 FOREIGN KEY(DEPTNO) REFERENCES DEPT(DEPTNO) );
+                  
+ DEFINING ALL THE CONSTRAINT AT THE TIME OF TABLE CREATION
+ ==========================================================
+ 
+ EMPNO NOT NULL+UNIQUE
+ EMPID  PRIMARY KEY
+ SAL    CHECK (SAL>8000 )
+ DEPTNO  FOREIGN KEY (REFER DEPT.DEPTNO)         
+ 
+ 
+ 
+ CREATE TABLE EMP1(EMPNO NUMBER CONSTRAINT CON_NN1 NOT NULL,  
+                   EMPID NUMBER,                
+                  SAL  NUMBER ,
+                  DEPTNO NUMBER,
+                  COMM NUMBER,
+                  CONSTRAINT CON_PK1 PRIMARY KEY (EMPID),
+                  CONSTRAINT CON_CH2 CHECK(SAL>8000),
+                  CONSTRAINT CON_FK1 FOREIGN KEY(DEPTNO) REFERENCES DEPT(DEPTNO) );
+
+       
+       
+       
+       CREATE ABOVE CONSTRAINT AFTER THE TABLE ID DEFINED
+       ======================================================
+       
+       CREATE TABLE EMP1(EMPNO NUMBER ,  
+                   EMPID NUMBER,                
+                  SAL  NUMBER ,
+                  DEPTNO NUMBER,
+                  COMM NUMBER
+                  );
+                  
+                
+                
+              
+           ALTER TABLE EMP1
+       MODIFY EMPNO CONSTRAINT CON_NN1 NOT NULL
+       ADD CONSTRAINT CON_PK1 PRIMARY KEY (EMPID)
+       ADD  CONSTRAINT CON_CH2 CHECK(SAL>8000)
+       ADD CONSTRAINT CON_FK1 FOREIGN KEY(DEPTNO) REFERENCES DEPT(DEPTNO) 
+       
+       ****ALL THE CONSTRAINTS SHOULD SATISFY THE EXISTING DATA
+       EX: IF WE HAVE NULL VALUES IN EMPNO THE WE CANT DEFINE NOT NULL CONSTRAINT.
+           (GO WITH PLSQL((TRIGGERS) TO DEFINE THE CONDITION ONLY FOR NEW DATA)
+                  
+               
+       
+       
+       CREATE TABLE EMP1(EMPNO NUMBER ,  
+                   EMPID NUMBER,                
+                  SAL  NUMBER ,
+                  DEPTNO NUMBER,
+                  COMM NUMBER,                 
+                  CONSTRAINT CON_FK1 FOREIGN KEY(DEPTNO) REFERENCES DEPT(DEPTNO) );
+       
+       
+       INSERT INTO EMP1(EMPNO,DEPTNO) VALUES (101,10);
+       
+       INSERT INTO EMP1(EMPNO,DEPTNO) VALUES (102,20);
+       
+       COMMIT;
+       
+       DELETE FROM DEPT WHERE DEPTNO=10;
+       ERROR : YOU CANT DELETE AS 10 VALUE IS REFERING BY EMP1.DEPTNO
+        integrity constraint (APPS.SYS_C00198613) violated - child record found
+        
+        IF WE WANT TO DELETE DEPT.DEPTNO=10 THEN FIRST DELETE EMP1.DEPT=10 THEN DELETE DEPT.DEPTNO=10
+       
+       ON DELETE CASCADE:WHEN EVER WE DELETE PARENT RECORD THEN AUTOMATICALLY CHILD RECORDS WILL BE DELETED
+       ===================
+       
+       CREATE TABLE EMP1(EMPNO NUMBER ,  
+                   EMPID NUMBER,                
+                  SAL  NUMBER ,
+                  DEPTNO NUMBER,
+                  COMM NUMBER,                 
+                  CONSTRAINT CON_FK1 FOREIGN KEY(DEPTNO) REFERENCES DEPT1(DEPTNO) ON DELETE CASCADE);
+                  
+                    INSERT INTO EMP1(EMPNO,DEPTNO) VALUES (101,10);
+       
+       INSERT INTO EMP1(EMPNO,DEPTNO) VALUES (102,20);
+       
+       COMMIT;
+       
+       DELETE FROM DEPT1 WHERE DEPTNO=10;
+       
+       ALL THE RECORDS WHICH DEPTNO=10 IN EMP1 TABLE WILL BE DELETED
+       
+       
+      
+       
+       
+       ON DELETE SET NULL:WHEN EVER WE DELETE PARENT RECORD THEN AUTOMATICALLY CHILD RECORD VALUE WILL BE SET TO NULL DELETED
+       ======================
+       
+       CREATE TABLE EMP1(EMPNO NUMBER ,  
+                   EMPID NUMBER,                
+                  SAL  NUMBER ,
+                  DEPTNO NUMBER,
+                  COMM NUMBER,                 
+                  CONSTRAINT CON_FK1 FOREIGN KEY(DEPTNO) REFERENCES DEPT1(DEPTNO) ON DELETE SET NULL);
+       
+       INSERT INTO EMP1(EMPNO,DEPTNO) VALUES (101,10);
+       
+       INSERT INTO EMP1(EMPNO,DEPTNO) VALUES (102,20);
+       
+       COMMIT;
+       
+ 
+     DELETE FROM DEPT1 WHERE DEPTNO=10;
+ 
+ 
+     SELECT * FROM EMP1;
+     
+     101       NULL
+     102       20
+  
+  
+       

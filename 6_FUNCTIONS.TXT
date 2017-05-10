@@ -1,0 +1,597 @@
+SQL FUNCTIONS
+==============
+SQL functions are used to             Manipulate the data
+                                      Format dates and numbers for display
+                                      Converts column data types
+
+SQL functions are two types:
+Single row function   :    Operates on each row and gives the result per row
+Multirow functions    :    Operates on group of rows and gives one result per group of rows
+(Group functions OR Aggregate functions)
+
+Single row functions:
+
+    charater functions
+    Number functions
+    conversion functions
+    Date functions
+    general functions
+
+Character functions   
+======================
+  :     Accept character input and return both character and numeric value
+        	Case manipulation functions               : convert case for character string 
+                  Lower   : Converts mixed case or upper case to lower case
+                  Upper   : Converts mixed case or lower case to upper case
+                  Initcap  : Converts the first letter of each word to upper case and remaining letters to lower case                                
+       	 Character manipulation functions        : These functions manipulate character string 
+                  Concat  :    It joins the two strings together
+                  Length  :     Shows length of a string by a numeric value
+Substr   :    Extracts a string of determined length
+Instr      :    Finds numeric position of a named character or string 
+Rtrim    :    Trims the characters from right to left
+Ltrim    :    Trims the characters from left to right 
+Trim     :    Trims the characters from both right to left and left to right
+Lpad    :     Pads the character value right justified
+Rpad          :     Pads the character value left justified
+Translate    :    Replaces the one set of sequence of characters with another set of sequence of characters
+Replace      :    Replaces one string with another string
+Case and
+Decode       :    These functions let you use IF-THEN-ELSE logic in SQL statements
+
+Number functions   
+======================    
+:     Accept numeric input and return numeric values
+                  Abs     :      Returns absolute value.
+                  Sign     :     Returns sign of the value.
+Mod    :      Returns remainder value
+Ceil     :      Returns highest integer value
+Floor   :      Returns lowest integer value
+Sqrt     :      Returns square root value
+Power  :      Returns power of the value.
+Round  :      Rounds the value to n decimal places. 
+                                           ( add 1 to nth position if (n+1) th number is >=5 and n is +ve (left to right)
+                                                              (add 1 to (n+1)th position if nth number is >=5 and n is -ve(right to left)
+Trunc   : Truncates the value to n decimal places.
+Trigonometric: By using this we can know the trigonometric functions value
+
+
+
+
+Conversion functions  :
+========================= 
+   Convert the value from one data type to another data type
+Implicit datatype conversion: In some cases, the oracle server uses data of one datatype where it expects data of a           different data type. This can happen when the oracle server can automatically convert the data to the expected data type. This data type conversion can be done implicitly by the oracle server, or explicitly by the user. If it is done by oracle server it is called as implicit datatype conversion.
+
+                        Varchar           to         number 
+                         Varchar          to         date
+                         Number          to         varchar
+                         Date                to         varchar  
+
+Explicit datatype conversion: In some cases, the oracle server uses data of one datatype where it expects data of a              different data type. This can happen when the oracle server can automatically convert the data to the expected data type. This data type conversion can be done implicitly by the oracle server, or explicitly by the user.if it is done by user it is called as explicit datatype conversion.
+
+                             To_number  :    character to number
+                             To_date       :     character to date
+                             To_char:      :     number to character
+                                                       date to character
+Date functions
+=================
+             :    Works on the values of the DATE data type
+       	Months_between(date1,date2)     :    Returns Number of months between dates
+Finds the number of month between date1 and date2.the result can be positive or negative. If date1 is       earlier than date2 then result is positive, if date1 is later than date2 the result is negative
+       
+      	Add_months (date, n)           :    Add calendar months to date
+                        The value of n must be integer and can be negative.
+
+Next_day (date,’char’)                :   Finds the date of  specified day which occurs next to date specified.       
+       	Last_day (date)        :    Finds the date of the Last day of the month
+       	Round                      :    Date is rounded to nearest day
+       	Trunc                       :    Date is truncated to nearest day
+
+General functions 
+==================       :
+     	Nvl (exp1, exp2):To convert a null value to an actual value.
+                       	exp1 is the source value or expression that may contain null
+                       	exp2 is the target value for converting the null
+                       	You can use nvl function to convert any data type, but return value (exp2) is always the  
+                                                                                                                 same of the exp2
+ 	Nvl2 (exp1, exp2, exp3): If the first expression is not null then second expression will be returned.if the first           .                    expression is null the third expression will be returned
+                        exp1 is the source value or expression that may contain null
+                        exp2 is the value returned if exp1 is not null
+                        exp3 is the value returned if exp1 is null
+
+    	Nullif (exp1, exp2): If the two expressions are equal, the function returns null. If they are not equal 
+            the function    
+                                             returns first expression. You can’t specify the literal null for first expression.
+
+    	Coalesce (exp1, exp2…….expN): Returns the first not null expression in the list.
+                            exp1 will be returned if it is not null
+                            exp2 will be returned if it is not null and exp1 is null
+                            expN will be returned if all the preceding (exp1, exp2….) expressions are null
+
+
+
+Multirow functions (Group functions):
+    Avg: Returns average value
+    Sum: Returns sum of values
+    Max: Returns maximum value
+    Min: Returns minimum value
+    Count: Returns number of rows with non-null values.
+    Distinct: Returns non duplicate values
+   
+    Group functions ignores null values in the column
+
+
+
+Character functions:
+Lower       : select lower('BHAnu PrakAsh') from dual--bhanu prakash
+Upper        : select upper('BHAnu PrakAsh') from dual—BHANUPRAKASH
+Initcap       : select initcap('BHAnu PrakAsh') from dual--Bhanu Prakash
+
+select * from emp where upper(ename)='MARTIN';
+
+OR
+
+select * from emp where LOWER(ename)='martin';
+
+or
+
+select empno,job,ename,upper(ename) from emp where INITCAP(ENAME)='Martin';
+
+Concat:  select concat('bhanu','prakash') from dual--bhanuprakash               
+               	   select concat('bhanu','prakash','reddy') from dual--error                       
+                concat will take only two arguments only
+If we want to concat more than two strings then use the concatination operator(||)
+select empno,empno||'   '||ename||'   '||job "Result" from emp
+
+
+Length: select length('bhanuprakash') from dual--12
+
+EXTRACT THE EMPLOYEE DETAILS WHOSE ENAME IS 5 CHARECTERS
+
+SELECT * FROM EMP WHERE LENGTH(ENAME)=5;
+
+Substr: select substr('bhanuprakash','5','2') from dual--up  (from 5th position 2
+                                                                                                                            characters)                        
+      select substr('bhanuprakash','2') from dual--hanuprakash
+         if we don't give  3rd argument it till display till last.         
+            select substr('bhanuprakash','-5','2') from dual--ak          
+      select substr('bhanuprakash','-5','-2') from dual—error(it wont show error it gives null 
+                                                         value)       
+       Find the details whose name starts with ‘a’ to ‘r’
+      select * from emp where substr(ename,'1','1')  between 'A' and 'R'
+            select * from emp where ename  between 'A' and 'R' --gives a to q 
+       
+       EXTRACT THE EMPLOYEE DETAILS WHOSE 3 CHARACTER IS A
+
+SELECT * FROM EMP WHERE UPPER(ENAME) LIKE '__A%';
+
+OR
+
+SELECT * FROM EMP WHERE SUBSTR(UPPER(ENAME),3,1) ='A';
+
+Instr: select instr('bhanuprakash','h',1,2) from dual--12
+                 means in which postion ‘h’ was appeared 2nd time from the 1st position
+                      select instr('bhanuprakash','h') from dual--2
+                                 means in which postion ‘h’ was appeared 1st time from the 1st position
+           select instr('bhanuprakash','a','-2',3) from dual--3         
+           to get the names which contains minimum one ‘a’
+           select * from emp where instr(ename,'a',1,1)>0          
+          to get the names which contains only one ‘a’
+                      select * from emp where instr(ename,'a',1,1)>0 and instr(ename,'a',1,2)=0
+
+EXTRACT THE EMPLOYEE DETAILS WHOSE ENAME CONTAINS MININUM 1 A
+----------------------------------------------------------------
+
+SELECT * FROM EMP WHERE UPPER(ENAME) LIKE '%A%';
+
+OR 
+
+SELECT * FROM EMP WHERE INSTR(UPPER(ENAME),'A',1,1) >0
+
+EXTRACT THE EMPLOYEE DETAILS WHOSE ENAME CONTAINS NO A
+
+SELECT * FROM EMP WHERE INSTR(UPPER(ENAME),'A',1,1) =0
+
+
+EXTRACT THE EMPLOYEE DETAILS WHOSE ENAME CONTAINS ONLY 1 A
+-----------------------------------------------------------
+
+IE., 1ST A SHOULD BE THERE 2ND A SHOULD NOT BE THERE 
+
+SELECT * FROM EMP WHERE INSTR(UPPER(ENAME),'A',1,1) >0 AND INSTR(UPPER(ENAME),'A',1,2)=0
+ 
+Rtrim: select rtrim('uuuuubhanuuu','u') from dual—uuuuubhan
+Ltrim:  select ltrim('uuuuubhanuuu','u') from dual—bhanuuu
+Trim :   select trim('u' from 'uuuuubhanuuu') from dual
+                         This will be useful to get the records when the name contains spaces before or after name
+                              select * from emp where trim (' ' from ename)='bhanu'
+
+Rpad: select rpad('bhanu','7','*') from dual--bhanu**
+Lpad: select lpad('bhanu','7','*') from dual--**bhanu
+                       select lpad(rpad('bhanu','7','*'),'9','*') from dual--**bhanu**
+
+Translate: select translate('bhanuprakash','bpk','mno') from dual--mhanunraoash
+                        Find out how many ‘a’ present in your name
+                        select length('bhanuprakash')-length(translate('bhanuprakash','ba','b')) 
+            from dual--3
+
+FIND OUT HOW MANY aS IN YOUR NAME
+----------------------------------
+
+  12  -  9=3
+  
+  SELECT LENGTH('BHANUPRAKASH') - LENGTH(TRANSLATE('BHANUPRAKASH','BA','B')) FROM DUAL
+            12                  -LENGTH('BHNUPRKSH')
+            12                  -9                  =3
+
+Replace: select replace('bhanuprakash','upra','sg') from dual--bhansgkash
+
+Decode and Case:
+Select ename,salary,decode(upper(job),'SALES',2*salary,
+                                'MANAGER',3*salary) newsal from emp
+
+select ename,salary,case  when upper(job)='SALES'    then 2*salary
+ 			              when upper(job)='MANAGER'  then 3*salary end newsal from emp
+
+If job is sales then salary will be increased to 2 times, if job is manger salary will be increased to 3 times.
+If we observe results of above queries for the jobs salesman, manager only salary will be displayed in the column named newsal (alias name) .for other jobs the salary will be null in newsal column.
+
+
+
+
+We can populate the original salary if the job is not salesman or manager by below queries.
+
+select ename,salary,decode(upper(job),'SALES',2*salary,
+                                      'MANAGER',3*salary,salary) newsal from emp
+
+select ename,salary,case  when upper(job)='SALES'  then 2*salary
+ 			    when upper(job)='MANAGER'  then 3*salary else salary end newsal from emp
+
+In decode function we can’t use comparison operators (=,>, <,>=, <=, <>) .and we can’t perform the operation on two columns.
+
+For example u want to display as ‘abovetaget’ if salary >5000 ,
+                                                             as ‘belowtaget’ if salary<=5000,
+                                                             as ‘unavailable’ if salary is null.
+You can’t perform above operation by using decode. We can perform by using CASE by writing the query as below.
+
+select ename,salary,case  when salary>6000  then   'ABOVETARGET'
+              	  When salary<=6000 then    'BELOWTARGET' 
+                    else 'UNAVAILABLE' 
+                                End NEWSAL from emp
+
+For example you want to increase the salary to 2 times if job is ‘manager’,
+                                                 to increase the salary to 3 times if ename is ‘amar’  operation depends on two       
+                                                                                                                          columns(job,ename)
+You can’t perform above operation by using decode. We can perform by using CASE by writing the query   as below.
+
+
+
+
+Select ename,job,salary,case  when  upper(job) ='MANAGER' then 2*salary
+                  	when upper(ename)='AMAR' then 3*salary    
+				else salary
+						End NEWSAL from emp                             
+
+If we are performing two operations on same row then first operation will be evaluated.
+
+For example for the employee miller the job is manager then we write above query salary is increased to 2 times not to 3 times.
+
+if we can achive the requirement using both decode and case then use decode as performace will be good.
+becuase in decode first we need to mention the column name and we need to do the operations on only that column.
+
+Number functions:
+==================
+Abs: Returns absolute value.
+                     select abs(-12),abs(12),abs(0) from dual--  12,12,0
+
+Sign: Returns sign of the value.
+    		select sign(-12),sign(12),sign(0) from dual--1,-1,0
+
+Mod: Returns remainder value
+     	select mod(5,2),mod(-5,2),mod(5,-2),mod(2,5),mod(0,5),mod(5,0) from dual--1,-1,1,2,0,5
+      If first argument is less than second argument then it returns first argument.
+
+Ceil: Returns highest integer value
+     		 select ceil(12.01),ceil(-12.01) from dual--13,-12
+
+Floor: Returns lowest integer value
+     		  select floor(12.01),floor(-12.01) from dual--12,-13
+
+Sqrt: Returns square root value
+     	 	select sqrt(25),sqrt(0) from dual--5,0
+      	select sqrt(-25) from dual—error
+
+
+
+
+Power: Returns power of the value.
+    		   select power(2,3),power(-2,3),power(2,-3),power(2,0),power(0,2) from dual--8,-
+                                                                      8,0.125,1,0
+
+Round: Rounds the value to n decimal (add 1 to nth position if (n+1)th number is >=5 and n is +ve
+(left to right)
+                                                              (add 1 to (n+1)th position if nth number is >=5 and n is -ve(right to left)
+
+          select round(1256.3456,2),round(1256.3446,2),round(1256.4445),round(1256.6445)  from dual
+                                          --1256.35,1256.34,1256,1257
+select round(1256.3456,-2),round(1246.3456,-2),round(1234.345,-9) from dual
+                                                                --1300,1200,0
+
+Trunc: Truncates the value to n decimal
+            	select trunc(1256.3456,2),round(1256.4445)  from dual--1256.34,1256
+      	select trunc(1256.3456,-2),round(1246.3456,-2) from dual--1200,1200
+
+Explicit datatype conversion:
+===============================
+           To_char : Date to character. 
+           -----------------------------    
+                                 j                        Julian date
+                                 yyyy                 gives year in digits
+                                 year                  gives year in words
+                                 mm                   month in digits
+                                 mon                  three letter abbreviation of the month
+                                 month               full name of the month
+                                 d                        day of the week
+                                 dd                     day of the month in digits
+                                 dy                        three letter abbreviation of the day of the week
+                                 day                      full name of the day of the week
+                                 cc                        current century
+                                 w                         week of the month in digits
+                                 ww                      week of the year in digits
+
+Oracle can do operations on date from 01-jan-4712 b.c  to 31-dec-9999 a.d
+    If we want to know how many days has over from 01-jan-4712 b.c to particular date then we can go for Julian date
+         select to_char(sysdate,'j') from dual--2454383 (sysdate:09-10-07)
+
+sysdate:09-10-07 (9th october 2007)
+
+select to_char(sysdate,'yyyy') from dual--2007
+select to_char(sysdate,'year') from dual--two thousand seven
+select to_char(sysdate,'mm') from dual--10
+select to_char(sysdate,'mon') from dual--oct
+select to_char(sysdate,'month') from dual--october  
+select to_char(sysdate,'dd') from dual--09
+select to_char(sysdate,'dy') from dual--tue
+select to_char(sysdate,'day') from dual--tuesday  
+select to_char(sysdate,'cc') from dual--21
+select to_char(sysdate,'w') from dual--2
+select to_char(sysdate,'ww') from dual—41
+
+FM: To remove padded blanks.
+
+       Find out the employees who has joined on Sunday 
+
+select * from emp where to_char(creation_date,'day')='sunday'--no rows returned
+    Since, to_char(creation_date,'day') return sunday _ _ (blanks) (9 characters) because Wednesday
+    contains highest characters (9).so we have to remove the padded blanks by using FM
+ 
+ 
+select * from emp where to_char(creation_date,'fmday')='sunday'
+                      By this we can get the details who has joined on Sunday
+
+or
+
+
+SELECT * FROM EMP WHERE rtrim(to_char(hiredate,'day'))='sunday';
+
+Similarly for the month also.
+
+    Find out the employees who has joined in April
+
+select * from emp where to_char(creation_date,'month')='april'--no rows returned Since, to_char(creation_date,'month') return april _ _ _ _ (blanks) (9 characters) because   September contains highest characters(9).so we have remove the padded blanks by using FM
+ 
+ select * from emp where to_char(creation_date,'fmmonth')='april'
+                 By this we can get the details who has joined in April month
+or
+
+SELECT * FROM EMP WHERE rtrim(to_char(hiredate,'month'))='april';
+
+
+To find the time:
+select to_char(sysdate,'hh:mi:ss') from dual----06:08:02
+select to_char(sysdate,'hh:mi:ss pm') from dual--06:08:02 pm
+select to_char(sysdate,'hh:mi:ss am') from dual--06:08:02 pm
+   We can mention pm or am but it gives correct time (am or pm).
+
+
+TH  returns ordinal number
+SP  returns spelled out number
+THSP or SPTH  returns spelled out ordinal number
+
+select to_char(sysdate,'dd') from dual--09
+select to_char(sysdate,'ddth') from dual--09th
+select to_char(sysdate,'ddsp') from dual--nine
+select to_char(sysdate,'ddspth') from dual—ninth
+
+select to_char(sysdate,'ddth mon yyyy') from dual;--10TH sep 2007
+
+
+To_char: Number to Character.
+-----------------------------
+
+9	Represents as number
+0	Forces a zero to be displayed
+$    Places a dollar sign
+.      Prints a decimal point
+,      Prints a thousand indicator 
+
+
+
+
+select to_char(50000,'$99,999.00') from dual-- $50,000.00
+
+select to_char(50000,'$9,999.00') from dual-- ##########
+  Since '50000' is 5 digits, but we have specified 4 digits ( '$9,999.00')
+
+To_date : Character to date
+
+  create table date1(empno number,joineddate varchar2(90))
+  insert into date1 values (2,'12-mar-2007')
+  
+  select joineddate from date1--12-mar-2007
+  select to_date(joineddate,'dd-mm-yyyy') from date1 --3/12/2007
+
+select to_char('27-oct-2015','yyyy') from dual --input should be date.But we have mentioned string.we convert it into date using to_date functions
+
+select to_char(to_date('27-oct-2015'),'yyyy') from dual --2015
+
+
+
+To_number : Character to number
+      
+select to_number('$1,101.000','$9,999.999') from dual—1101
+
+
+Datefunctions:
+===============
+Months_between:
+select months_between('11-nov-2007','11-sep-2007')from dual--2
+select months_between('11-sep-2007','14-nov-2007')from dual-- -2.096
+select months_between(sysdate,'11-nov-2007')from dual-- -2.096
+To find the experience of the employees:
+   select months_between(sysdate,hire_date)/12 from emp
+
+Add_months:
+       select add_months('21-sep-2007',2) from dual--11/21/2007
+       select add_months('21-sep-2007',-2) from dual--7/21/2007
+
+Next_day:
+             select next_day('23-aug-2007',7) from dual--8/25/2007
+       select next_day('23-aug-2007','saturday') from dual--8/25/2007
+
+Last_day:
+            select last_day('23-aug-2007') from dual --8/31/2007
+
+
+
+
+Round:    (in above functions we have mention the dates as string because that functions can convert the string into date but round and trunc cant convert, so we have to convert the string into date by using to_date function)
+            
+select round('13-aug-2007','month') from dual--error as 13-aug-2007 is not a date its a string.
+select round(to_date('13-aug-2007'),'month') from dual--8/1/2007
+      select round(to_date('15-aug-2007'),'month') from dual--8/1/2007
+      select round(to_date('18-aug-2007'),'month') from dual--9/1/2007
+             if date is <=15th of the that month return that month starting date
+             if date is >15th of the that month return next month starting date
+
+select round(to_date('13-aug-2007'),'year') from dual--1/1/2008
+select round(to_date('13-may-2007'),'year') from dual--1/1/2007
+select round(to_date('18-june-2007'),'year') from dual--1/1/2007
+ if the month is <=june return that year starting date 
+             if the month is >june return next year starting date
+
+
+Trunc:
+              select trunc(to_date('13-aug-2007'),'month') from dual--8/1/2007
+       select trunc(to_date('15-aug-2007'),'month') from dual--8/1/2007
+       select trunc(to_date('18-aug-2007'),'month') from dual--8/1/2007
+       returns stating date of the mentioned month
+
+ select trunc(to_date('13-aug-2007'),'year') from dual--1/1/2007
+ select trunc(to_date('13-may-2007'),'year') from dual--1/1/2007
+ select trunc(to_date('18-june-2007'),'year') from dual--1/1/2007
+       returns starting date of the mentioned year
+
+
+General functions:
+====================
+
+Nvl:
+          select emp_name,salary,comm,(salary*12)+(comm*12) "annul compensation" from emp
+We write the query as above to find out the employees salary for year. But for some employees the salary value is null then for that row the annual compensation will be null.so convert the null value to zero by using nvl function 
+
+     select emp_name,salary,comm,nvl((salary*12),0)+(comm*12) "annul compensation" from emp
+
+Nvl2:
+          Print as "sal+comm" if commission is available others wise print as "sal"
+          
+     select emp_name,comm,nvl2(comm,'sal+comm','sal') "income" from emp
+
+Nullif:
+Write the query to know whose salary and comm is equal. If "result" return null then    salary is equal to comm 
+
+    select emp_name,salary,comm,nullif(nvl(salary,0),comm) "result" from emp
+                (some salary values are null thats why we used nvl function)
+
+
+Coalesce:
+    select emp_name,salary,comm, coalesce(salary,comm,0) "result" from emp
+
+returns salary if salary is not null
+returns comm(commission) if commission is not null and salary is null
+returns 0 if salary and commission are null
+
+Multirow functions:
+======================
+select avg(salary),min(salary),max(salary),count(salary) from emp
+select avg(nvl(salary,0)) from emp
+select distinct(salary) from emp
+                        select count(*) from emp
+
+    
+
+   Creating groups of data:
+    Group by clause: Until now all the group functions have treated the table as one large group of  
+            information.In some times you need to divide the table of information into smaller groups.
+            This can be done by using the group by clause.
+           
+ If you include a group function in the select statement, you cannot select individual result as   well. Unless the individual columns appear in the group by clause.  
+
+            You can’t use an alias name in the group by clause  
+          
+ select deptno,avg(salary) from emp group by deptno order by avg(salary)
+ select deptno,job,avg(salary) from emp group by deptno,job order by avg(salary)
+
+select deptno,job,avg(salary) from emp group by deptno order by avg(salary)
+                                          --error(not a group by expression)
+   we should mention the single row fucntion in group by clause
+
+Having clause: We can’t use the where clause to restrict the groups. We can use the having clause  
+              to restrict the groups
+
+                       select deptno,avg(salary) from emp where avg(salary)>1000 
+                                                           group by deptno order by avg(salary)
+		                    --error(group function is not allowed here)
+
+  select deptno,avg(salary) from emp group by deptno  
+                                                            having avg(salary)>5000  
+					                        order by avg(salary)
+  select deptno,avg(salary) from emp where deptno<>30 
+                                                            group by deptno  
+                                                            having avg(salary)>5000  
+						            order by avg(salary)
+EMP1
+
+DEPTNO  SUBDEPT   EMPNO   SAL
+10      101               1000
+10      101               2000
+10      102               1500
+10      102               2500
+20      103               
+20      103               6000
+30      105               1000
+30      105               1500
+30      104               
+30      104               3000
+
+SELECT DEPTNO,MAX(SAL) FROM EMP
+GROUP BY DEPTNO
+
+10  2500
+20  6000
+30  3000
+
+
+SELECT DEPTNO,SUBDEPT,MAX(SAL) FROM EMP
+GROUP BY DEPTNO,SUBDEPT
+ORDER BY DEPTNO,SUBDEPT
+10 101   2000
+10 102   2500
+20 103   6000
+30 104   3000  
+30 105   1500   
+
+GROUP BY FUNCTIONS IGNORES THE NULL VALUES     
+
+

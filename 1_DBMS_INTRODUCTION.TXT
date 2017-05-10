@@ -1,0 +1,162 @@
+Oracle is a RDBMS
+
+RDBMS -> Relational Database management system.
+
+
+Data:   Collection of interrelated information
+
+
+Address : Door no: 1/1234   
+          block  : A block
+          Street : MG road
+          city   : Banglore
+          country : india
+          
+
+Database: Where data is organized in proper manner
+   ex: Notepad
+Database management System : DBMS
+set of programs which will organization the data in proper mannager
+
+
+BEfore DBMS came into the picture we were using notepads,excelsheets,MS WORD ETC.(FMS-file management System)
+
+emp.xls
+
+empno ename  deptno
+101    a      10
+102    b      20
+103    c      10
+
+dept.xls
+deptno dname
+10     sales
+20     admin
+
+i want see the data like
+
+101   a  sales
+102   b   admin
+
+Disadvantage:
+1) we cant join two files
+2) not secured (any body can access)
+3) Easily editable
+
+
+
+Types of DBMS
+-------
+Hdbms  ->Hierarchy DBMS
+Ndbms  -> Network DBMS
+Rdbms  -> Relational DBMS
+
+
+Hierarchy DBMS
+---------------
+Data will be stored in the form of the hierarchy
+  
+                               HOD1
+
+
+                    L1       L2      L3    L4
+
+               s1   s2 s3   s4 s5   s3 s4   s3
+
+Disadvantages: we need to change the same data in N number of places
+
+
+Network DBMS:
+---------------
+Data will be stored in the form of the sets
+
+
+    roll no       Name
+   
+     R1           
+                  abc
+     R2
+
+Disadvantages : Data is not organized in proper manner
+
+Relational DBMS:
+-----------------
+data will be stored in tables (Rows and columns)
+
+table : student
+roll no   name
+r1        abc
+r2        abc
+
+
+DR EF Codd designed the  rdbms model in 1960
+
+EF codd rules :
+----------------
+we need to follow codd rules while desinging the RDBMS
+12 rules
+
+1)    All the data should be stored in the form of table.
+2)    Every column should accept null values
+        ename empid  sal   DA
+         a     101   10000  2%
+         b     102   30000  
+         c     103  
+3)  With out any ambiguity we have to retrieve the data
+4)  We have to access the table structure by the same tools which access the data
+     select * from emp
+         ename empid  sal   DA
+         a     101   10000  2%  
+         b     102   30000  
+         c     103 
+    
+5) Every RDBMS should have one clearly defined language to insert, delete, retrieve…. the data  
+    Oracle -> sql & PLSQL
+   
+6) Data may be presented in the different logical combinations (views).any operation on this view should 
+                  be effected to tables (**Discuss one views concept is done)
+7)Any no. of rows should be effected when we perform insert, delete and update etc...
+
+   delete from emp where empno=101;--1 row deleted
+   delete from emp; -- 3 rows deleted (We are doing with single statement not multiple statements)
+       
+8)  Data should not be effected even though storage architecture changes.
+
+    present i have 2gb ram...now i have upgraded to 8gb.then also data should not be effected.
+     
+9) Data should not be effected even though table structure changes
+
+   i will add/drop some columns but existing data should not be effected
+    
+10) Data should not be effected even though data is stored in different locations.
+     Even thoough data is stored in different servers data should not be effected
+
+11)     Data base should support constraints for security
+         empid and salary should not be null
+     
+12) There should be no way to modify the database structure other than the data base language (sql).
+
+     modify anything in the oracle when it should allow only sql-plsql.It should not allow other languages
+
+No data base will satisfy the entire codd’s rules. A data base which satisfies more than half of the codd rules it is good 
+data base.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
